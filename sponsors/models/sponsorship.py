@@ -117,6 +117,18 @@ class SponsorshipPackage(OrderedModel):
             slug=self.slug, year=year, defaults=defaults
         )
 
+    def get_default_revenue_split(self) -> list[tuple[str, float]]:
+        """
+        Give the admin an indication of how revenue for sponsorships in this package will be divvied up
+        """
+        values, key = {}, "program__name"
+        for benefit in self.benefits.values(key).annotate(amount=Sum("internal_value", default=0)).order_by("-amount"):
+            values[benefit[key]] = values.get(benefit[key], 0) + (benefit["amount"] or 0)
+        total = sum(values.values())
+        if not total:
+            return []  # nothing to split!
+        return [(k, round(v / total * 100, 3)) for k, v in values.items()]
+
 
 class SponsorshipProgram(OrderedModel):
     """
@@ -135,7 +147,7 @@ class SponsorshipProgram(OrderedModel):
 
 class Sponsorship(models.Model):
     """
-    Represente a sponsorship application by a sponsor.
+    Represents a sponsorship application by a sponsor.
     It's responsible to group the set of selected benefits and
     link it to sponsor
     """
@@ -182,6 +194,11 @@ class Sponsorship(models.Model):
     package = models.ForeignKey(SponsorshipPackage, null=True, on_delete=models.SET_NULL)
     sponsorship_fee = models.PositiveIntegerField(null=True, blank=True)
     overlapped_by = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
+    renewal = models.BooleanField(
+        null=True,
+        blank=True,
+        help_text="If true, it means the sponsorship is a renewal of a previous sponsorship and will use the renewal template for contracting."
+    )
 
     assets = GenericRelation(GenericAsset)
 
@@ -377,6 +394,12 @@ class Sponsorship(models.Model):
             self.FINALIZED: [],
         }
         return states_map[self.status]
+
+    @property
+    def previous_effective_date(self):
+        if len(self.sponsor.sponsorship_set.all().order_by('-year')) > 1:
+                return self.sponsor.sponsorship_set.all().order_by('-year')[1].start_date
+        return None
 
 
 class SponsorshipBenefit(OrderedModel):
