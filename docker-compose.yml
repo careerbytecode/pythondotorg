@@ -25,14 +25,14 @@ services:
   web:
     build: .
     image: pythondotorg:docker-compose
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python app/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://pythondotorg:pythondotorg@postgres:5432/pythondotorg
-      DJANGO_SETTINGS_MODULE: pydotorg.settings.local
+      DJANGO_SETTINGS_MODULE: app.pydotorg.settings.local
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,12 +41,12 @@ services:
 
   worker:
     image: pythondotorg:docker-compose
-    command: celery -A pydotorg worker -B -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    command: celery -A app.pydotorg worker -B -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
       - .:/code
     environment:
       DATABASE_URL: postgresql://pythondotorg:pythondotorg@postgres:5432/pythondotorg
-      DJANGO_SETTINGS_MODULE: pydotorg.settings.local
+      DJANGO_SETTINGS_MODULE: app.pydotorg.settings.local
     depends_on:
       postgres:
         condition: service_healthy
