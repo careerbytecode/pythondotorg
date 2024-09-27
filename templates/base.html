@@ -32,7 +32,6 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="cleartype" content="on">
-    <meta http-equiv="imagetoolbar" content="false">{# Kills IE6's images toolbar. Still useful. #}
 
     <script async
             src="https://media.ethicalads.io/media/client/v1.4.0/ethicalads.min.js"
@@ -47,7 +46,7 @@
     {% comment %}
     {# equivalent to: #}
     <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/style.css" title="default">
-    <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/mq.css" media="not print, braille, embossed, speech, tty">
+    <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/mq.css" media="not print, speech">
     {% endcomment %}
 
     <!--[if (lte IE 8)&(!IEMobile)]>
@@ -174,7 +173,7 @@
         <!-- Sister Site Links -->
         <div id="top" class="top-bar do-not-print">
 
-            <nav class="meta-navigation container" role="navigation">
+            <nav class="meta-navigation container">
 
                 {# Allow Screen readers (hidden for all others) to skip the navigation and get to the main content #}
                 <div class="skip-link screen-reader-text">
@@ -197,7 +196,7 @@
         </div>
 
         <!-- Header elements -->
-        <header class="main-header" role="banner">
+        <header class="main-header">
             <div class="container">
 
                 <h1 class="site-headline">
@@ -214,7 +213,7 @@
                                 <span aria-hidden="true" class="icon-search"></span>
 
                                 <label class="screen-reader-text" for="id-search-field">Search This Site</label>
-                                <input id="id-search-field" name="q" type="search" role="textbox" class="search-field" placeholder="Search" value="{{ request.GET.q }}" tabindex="1">
+                                <input id="id-search-field" name="q" type="search" class="search-field" placeholder="Search" value="{{ request.GET.q }}" tabindex="1">
 
                                 <button type="submit" name="submit" id="submit" class="search-button" title="Submit this Search" tabindex="3">
                                     GO
@@ -229,9 +228,9 @@
                                 <li class="tier-1 last" aria-haspopup="true">
                                     <a href="#" class="action-trigger"><strong><small>A</small> A</strong></a>
                                     <ul class="subnav menu">
-                                        <li class="tier-2 element-1" role="treeitem"><a class="text-shrink" title="Make Text Smaller" href="javascript:;">Smaller</a></li>
-                                        <li class="tier-2 element-2" role="treeitem"><a class="text-grow" title="Make Text Larger" href="javascript:;">Larger</a></li>
-                                        <li class="tier-2 element-3" role="treeitem"><a class="text-reset" title="Reset any font size changes I have made" href="javascript:;">Reset</a></li>
+                                        <li class="tier-2 element-1" role="menuitem"><a class="text-shrink" title="Make Text Smaller" href="javascript:;">Smaller</a></li>
+                                        <li class="tier-2 element-2" role="menuitem"><a class="text-grow" title="Make Text Larger" href="javascript:;">Larger</a></li>
+                                        <li class="tier-2 element-3" role="menuitem"><a class="text-reset" title="Reset any font size changes I have made" href="javascript:;">Reset</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -240,10 +239,10 @@
                                 <li class="tier-1 last" aria-haspopup="true">
                                     <a href="#" class="action-trigger">Socialize</a>
                                     <ul class="subnav menu">
-                                        <li class="tier-2 element-1" role="treeitem"><a href="https://www.linkedin.com/company/python-software-foundation/"><i aria-hidden="true" class="fa fa-linkedin-square"></i>LinkedIn</a></li>
-                                        <li class="tier-2 element-2" role="treeitem"><a href="https://fosstodon.org/@ThePSF"><span aria-hidden="true" class="icon-mastodon"></span>Mastodon</a></li>
-                                        <li class="tier-2 element-3" role="treeitem"><a href="/community/irc/"><span aria-hidden="true" class="icon-freenode"></span>Chat on IRC</a></li>
-                                        <li class="tier-2 element-4" role="treeitem"><a href="https://twitter.com/ThePSF"><span aria-hidden="true" class="icon-twitter"></span>Twitter</a></li>
+                                        <li class="tier-2 element-1" role="menuitem"><a href="https://www.linkedin.com/company/python-software-foundation/"><i aria-hidden="true" class="fa fa-linkedin-square"></i>LinkedIn</a></li>
+                                        <li class="tier-2 element-2" role="menuitem"><a href="https://fosstodon.org/@ThePSF"><span aria-hidden="true" class="icon-mastodon"></span>Mastodon</a></li>
+                                        <li class="tier-2 element-3" role="menuitem"><a href="/community/irc/"><span aria-hidden="true" class="icon-freenode"></span>Chat on IRC</a></li>
+                                        <li class="tier-2 element-4" role="menuitem"><a href="https://twitter.com/ThePSF"><span aria-hidden="true" class="icon-twitter"></span>Twitter</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -252,7 +251,7 @@
                     </div><!-- end options-bar -->
                 </div>
 
-                <nav id="mainnav" class="{% block main-nav_attributes %}python-navigation{% endblock %} main-navigation do-not-print" role="navigation">
+                <nav id="mainnav" class="{% block main-nav_attributes %}python-navigation{% endblock %} main-navigation do-not-print">
                     {% block main_navigation %}
                         {% sitetree_menu from "main" include "python-meta" template "sitetree/submenu.html" %}
                     {% endblock main_navigation %}
@@ -303,7 +302,7 @@
 
         <!-- Footer and social media list -->
         {% block footer %}
-        <footer id="site-map" class="main-footer" role="contentinfo">
+        <footer id="site-map" class="main-footer">
             <div class="main-footer-links">
                 <div class="container">
 
